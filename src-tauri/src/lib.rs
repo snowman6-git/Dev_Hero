@@ -1,9 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use tauri::{LogicalSize, Window};
 
-fn init(window: Window){
-    center_window(&window);
-}
 fn center_window(window: &Window){
     let _ = window.center()
     .expect("window init failed!");
@@ -14,15 +11,16 @@ use std::thread;
 use std::time::Duration;
 
 #[tauri::command]
-async fn start_real_loading(app: AppHandle) {
+async fn init(app: AppHandle) {
     // 무거운 작업을 별도 스레드에서 실행 (비동기 시뮬레이션)
-    println!("AAA");
     thread::spawn(move || {
-        let items = vec!["Initializing...", "Connecting to SQLite...", "Fetching Assets..."];
+
+        // 차후 실제 에셋이나 리소스 로딩 스레드 or 동기적 처리하고 아이템스를 실제 작업으로 변경
+        let items = vec!["Initializing...", "Connecting to SQLite...", "Fetching Assets...", "system_Ready"];
         
         for item in items {
-            // JS로 데이터를 '이벤트' 이름 "loading-step"으로 쏴줌
-            app.emit("loading-step", item).unwrap();
+            // JS로 데이터를 '이벤트' 이름 "first-loading"으로 쏴줌
+            app.emit("init", item).unwrap();
             
             // 실제 로딩 지연 시뮬레이션 (네트워크나 DB 요청 시간)
             thread::sleep(Duration::from_millis(800));
@@ -55,7 +53,7 @@ fn fullscreen_window(window: Window) {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, resize_window, fullscreen_window, start_real_loading])
+        .invoke_handler(tauri::generate_handler![greet, resize_window, fullscreen_window, init])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 
