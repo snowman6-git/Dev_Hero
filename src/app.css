@@ -1,0 +1,27 @@
+/* 모든 HTML 요소에 적용 */
+
+@font-face {
+    font-family: 'NxMaple'; /* 사용할 이름 정의 */
+    src: url('lib/assets/Maplestory OTF Light.otf') format('opentype');
+    /* font-weight: normal; */
+    /* font-style: normal; */
+}
+
+main, html {
+    margin: 0;
+    padding: 0;
+
+    min-width: 100vw;
+    min-height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+
+    font-family: 'NxMaple';
+    color: white; background-color: #1f1f1f;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
